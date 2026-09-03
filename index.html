@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow | Smart Task Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+```
+<header class="navbar">
+    <a href="#" class="logo">Task<span>Flow</span></a>
+
+    <div class="nav-right">
+        <p id="currentDate"></p>
+        <button class="theme-btn" id="themeBtn">☾</button>
+    </div>
+</header>
+
+
+<main class="container">
+
+    <section class="welcome-section">
+        <div>
+            <p class="eyebrow">YOUR PERSONAL PLANNER</p>
+            <h1>Plan less. <span>Do more.</span></h1>
+            <p class="welcome-text">
+                Organize your tasks and focus on what matters most.
+            </p>
+        </div>
+
+        <button class="add-task-btn" id="openModalBtn">
+            + Add Task
+        </button>
+    </section>
+
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon blue">▣</div>
+            <div>
+                <p>Total Tasks</p>
+                <h2 id="totalTasks">0</h2>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon red">!</div>
+            <div>
+                <p>High Priority</p>
+                <h2 id="highPriorityTasks">0</h2>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">◷</div>
+            <div>
+                <p>Due Today</p>
+                <h2 id="dueTodayTasks">0</h2>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <div>
+                <p>Completed</p>
+                <h2 id="completedTasks">0</h2>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section class="progress-section">
+
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">TODAY'S PROGRESS</p>
+                <h2>Keep moving forward.</h2>
+            </div>
+
+            <span id="progressText">0%</span>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <p id="progressMessage">Add your first task to get started.</p>
+
+    </section>
+
+
+    <section class="filters">
+
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+
+        <select id="priorityFilter">
+            <option value="all">All Priorities</option>
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+        </select>
+
+    </section>
+
+
+    <section class="task-board">
+
+        <div class="task-column">
+            <div class="column-title">
+                <span class="dot do-now"></span>
+                <div>
+                    <h2>Do Now</h2>
+                    <p>Urgent and important</p>
+                </div>
+            </div>
+
+            <div class="task-list" id="doNowList"></div>
+        </div>
+
+
+        <div class="task-column">
+            <div class="column-title">
+                <span class="dot do-next"></span>
+                <div>
+                    <h2>Do Next</h2>
+                    <p>Important, not urgent</p>
+                </div>
+            </div>
+
+            <div class="task-list" id="doNextList"></div>
+        </div>
+
+
+        <div class="task-column">
+            <div class="column-title">
+                <span class="dot later"></span>
+                <div>
+                    <h2>Later</h2>
+                    <p>Can wait for now</p>
+                </div>
+            </div>
+
+            <div class="task-list" id="laterList"></div>
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ADD / EDIT TASK MODAL -->
+
+<div class="modal hidden" id="taskModal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">TASK DETAILS</p>
+                <h2 id="modalTitle">Create New Task</h2>
+            </div>
+
+            <button class="close-btn" id="closeModalBtn">×</button>
+        </div>
+
+
+        <form id="taskForm">
+
+            <input type="hidden" id="editTaskId">
+
+            <div class="form-group">
+                <label for="taskName">Task Name</label>
+                <input
+                    type="text"
+                    id="taskName"
+                    placeholder="What do you need to do?"
+                    required
+                >
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="taskPriority">Priority</label>
+
+                    <select id="taskPriority">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="taskCategory">Category</label>
+
+                    <select id="taskCategory">
+                        <option value="Work">Work</option>
+                        <option value="Study">Study</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="taskDeadline">Deadline</label>
+                    <input type="date" id="taskDeadline">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="taskTime">Estimated Time</label>
+
+                    <select id="taskTime">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="1 hour">1 hour</option>
+                        <option value="2 hours">2 hours</option>
+                        <option value="3+ hours">3+ hours</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" id="cancelBtn">
+                    Cancel
+                </button>
+
+                <button type="submit" class="save-btn" id="saveTaskBtn">
+                    Add Task
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<script src="script.js"></script>
+```
+
+</body>
+</html>
